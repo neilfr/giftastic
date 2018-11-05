@@ -13,6 +13,29 @@ function renderButtons(){
     }
 }
 
+function clickedGiphy(){
+    var newSource;
+    var $element=$(this);
+    var state=$element.attr('giphyState');
+
+    if(state==="still"){
+        newSource=$element.attr('giphyURL');
+        console.log("your new source is:");
+        console.log(newSource);
+        $element.attr('src',newSource);
+        $element.attr('giphyState','giphy');
+    }
+    if(state==="giphy"){
+        newSource=$element.attr('stillURL');
+        console.log("your new source is:");
+        console.log(newSource);
+        $element.attr('src',newSource);
+        $element.attr('giphyState','still');
+    }
+    
+}
+
+
 // adds topic to the topics array and re-renders the button list
 $("#addTopic").on("click", function(event) {
     event.preventDefault(); // can't remember exactly why this is needed
@@ -39,13 +62,17 @@ function displayGiphys(){
         console.log(response);
         var resultData=response.data;
 
-        //append rating and image for each of the returned items to the screen
+        //append rating and still image for each of the returned items to the screen
         for (var i=0;i<resultData.length;i++){
             var $thisGiphyDiv=$('<div>'); //container for the elements for this object
             var $p=$('<p>');
             var $img=$('<img>');
-            $img.attr('src',resultData[i].images.fixed_height.url);
-            $p.html(resultData[i].rating);
+            $img.addClass("giphy");
+            $img.attr('giphyURL',resultData[i].images.fixed_height.url);
+            $img.attr('stillURL',resultData[i].images.fixed_height_still.url);
+            $img.attr('giphyState','still');
+            $img.attr('src',resultData[i].images.fixed_height_still.url);
+            $p.html("Rating: "+resultData[i].rating);
             $thisGiphyDiv.append($p);
             $thisGiphyDiv.append($img);
             $('#resultsContainer').append($thisGiphyDiv);
@@ -55,6 +82,10 @@ function displayGiphys(){
 
 // display the giphys when the button is clicked
 $(document).on("click", ".topic", displayGiphys);
+
+// display the giphys when the button is clicked
+$(document).on("click", ".giphy", clickedGiphy);
+
 
 // display initial button list
 renderButtons();
