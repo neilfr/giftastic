@@ -1,5 +1,5 @@
 //intialize the topic list
-var topics = ['lions','tigers','bears'];
+var topics = ['lions','aardvarks','platypus'];
 
 //display buttons for topics
 function renderButtons(){
@@ -65,6 +65,7 @@ function displayGiphys(){
         //append rating and still image for each of the returned items to the screen
         for (var i=0;i<resultData.length;i++){
             var $thisGiphyDiv=$('<div>'); //container for the elements for this object
+            $thisGiphyDiv.addClass("giphyBlock");
             var $p=$('<p>');
             var $img=$('<img>');
             $img.addClass("giphy");
@@ -72,9 +73,9 @@ function displayGiphys(){
             $img.attr('stillURL',resultData[i].images.fixed_height_still.url);
             $img.attr('giphyState','still');
             $img.attr('src',resultData[i].images.fixed_height_still.url);
-            $p.html("Rating: "+resultData[i].rating);
-            $thisGiphyDiv.append($p);
+            $p.html("Rating: "+resultData[i].rating);            
             $thisGiphyDiv.append($img);
+            $thisGiphyDiv.append($p);
             $('#resultsContainer').append($thisGiphyDiv);
         }
     })
